@@ -272,11 +272,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5725266263501135285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaa619dc41091b840b3cca5e59806fcd, type: 3}
+  m_Script: {fileID: 11500000, guid: 35d5e788ecc46ef4bb50da1bfd070086, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputText: {fileID: 5725266262637720497}
-  startRecoButton: {fileID: 5725266264498821431}
+  outputText: {fileID: 0}
+  recognizedOutputText: {fileID: 0}
+  startRecoButton: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!1 &5725266264498821430
 GameObject:
   m_ObjectHideFlags: 0

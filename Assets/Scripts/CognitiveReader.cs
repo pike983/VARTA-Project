@@ -13,6 +13,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using Microsoft.CognitiveServices.Speech;
 
+using TMPro;
+
 // For Speech to Text
 #if PLATFORM_ANDROID
 using UnityEngine.Android;
@@ -26,7 +28,8 @@ public class CognitiveReader : MonoBehaviour
 {
     // For Speech to Text
     // Hook up the two properties below with a Text and Button object in your UI.
-    public Text outputText;
+    public TMPro.TextMeshProUGUI outputText;
+    public TMPro.TextMeshProUGUI recognizedOutputText;
     public Button startRecoButton;
 
     private object listeningThreadLocker = new object();
@@ -104,6 +107,36 @@ public class CognitiveReader : MonoBehaviour
                 waitingForReco = false;
             }
         }
+    }
+
+    // Calls TextToSpeechActivate on a string that has been converted into each individual letter.
+    public void ReadWordInParts(TMP_Dropdown optionMenu)
+    {
+        string text = optionMenu.options[optionMenu.value].text;
+        string word = text + ", ";
+        foreach (char letter in text)
+        {
+            word = word + " " + letter;
+        }
+        word = word + " " + text;
+        TextToSpeechActivate(word);
+    }
+
+    // Reads out an option from a drop down menu.
+    public void ReadOption(TMP_Dropdown optionMenu)
+    {
+        string text = optionMenu.options[optionMenu.value].text;
+        TextToSpeechActivate(text);
+    }
+
+    public void SpeakGivenText(Text text)
+    {
+        TextToSpeechActivate(text.text);
+    }
+
+    public void SpeakGivenTMPText(TMPro.TextMeshProUGUI text)
+    {
+        TextToSpeechActivate(text.text);
     }
 
     public void TextToSpeechActivate(string textToSpeak)
@@ -196,9 +229,9 @@ public class CognitiveReader : MonoBehaviour
 
     private void SpeechToTextStart()
     {
-        if (outputText == null)
+        if (recognizedOutputText == null)
         {
-            UnityEngine.Debug.LogError("outputText property is null! Assign a UI Text element to it.");
+            UnityEngine.Debug.LogError("recognizedOutputText property is null! Assign a UI Text element to it.");
         }
         else if (startRecoButton == null)
         {
@@ -235,13 +268,13 @@ public class CognitiveReader : MonoBehaviour
         if (!micPermissionGranted && Permission.HasUserAuthorizedPermission(Permission.Microphone))
         {
             micPermissionGranted = true;
-            message = "Click button to recognize speech";
+            // message = "Click button to recognize speech";
         }
 #elif PLATFORM_IOS
         if (!micPermissionGranted && Application.HasUserAuthorization(UserAuthorization.Microphone))
         {
             micPermissionGranted = true;
-            message = "Click button to recognize speech";
+            // message = "Click button to recognize speech";
         }
 #endif
 
@@ -251,9 +284,9 @@ public class CognitiveReader : MonoBehaviour
             {
                 startRecoButton.interactable = !waitingForReco && micPermissionGranted;
             }
-            if (outputText != null)
+            if (recognizedOutputText != null)
             {
-                outputText.text = heardMessage;
+                recognizedOutputText.text = heardMessage;
             }
         }
     }

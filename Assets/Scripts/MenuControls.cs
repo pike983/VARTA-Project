@@ -12,7 +12,7 @@ public class MenuControls : MonoBehaviour
 
     public void LoadStoryScene()
     {
-        ChangeScene("StoryModeScene");
+        ChangeScene("MainStory1");
     }
 
     public void LoadPracticeScene()
