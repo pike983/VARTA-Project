@@ -17,6 +17,8 @@ public class BookMaker : MonoBehaviour
 
     public TMP_Dropdown availableBooks;
 
+    public GameObject physicalBook;
+
     // Variables for displaying the report.
     public TMPro.TextMeshProUGUI reportStatistics;
     public TMP_Dropdown wrongWords;
@@ -122,7 +124,10 @@ public class BookMaker : MonoBehaviour
                         + "Completion Time: " + currentBook.resultReport.completionTime;
         reportStatistics.text = report;
         wrongWords.ClearOptions();
-        wrongWords.AddOptions(currentBook.resultReport.incorrectWords);
+        List<string> incorrectWords = new List<string> {"Incorrect Words"};
+        incorrectWords.AddRange(currentBook.resultReport.incorrectWords);
+        wrongWords.AddOptions(incorrectWords);
+        physicalBook.GetComponent<CognitiveReader>().TextToSpeechActivate("Report Generated");
         if (!isPracticeMode && percentage > 50.00f)
         {
             passedLevel = true;
