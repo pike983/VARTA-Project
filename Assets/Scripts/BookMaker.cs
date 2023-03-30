@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Threading;
 using System;
+using System.Globalization;
 
 public class BookMaker : MonoBehaviour
 {
@@ -92,7 +93,8 @@ public class BookMaker : MonoBehaviour
             currentSentenceNumber++;
             if (currentSentenceNumber < totalNumberSentences)
             {
-                heardSentence.text = heardSentences[currentSentenceNumber];
+                // heardSentence.text = heardSentences[currentSentenceNumber];
+                physicalBook.GetComponent<CognitiveReader>().ReplaceHeardMessage(heardSentences[currentSentenceNumber]);
             }
             displayCurrentBook();
         }
@@ -104,6 +106,7 @@ public class BookMaker : MonoBehaviour
         {
             heardSentences[currentSentenceNumber] = heardSentence.text;
             currentSentenceNumber--;
+            physicalBook.GetComponent<CognitiveReader>().ReplaceHeardMessage(heardSentences[currentSentenceNumber]);
             displayCurrentBook();
         }
     }
@@ -117,7 +120,7 @@ public class BookMaker : MonoBehaviour
 
     private void displayReport()
     {
-        float percentage = ((float)currentBook.resultReport.numCorrectWords / (float)currentBook.resultReport.numWords) * 100.00f;
+        float percentage = ((float)currentBook.resultReport.numCorrectWords / (((float)currentBook.resultReport.numCorrectWords) + (float)currentBook.resultReport.numIncorrectWords)) * 100.00f;
         string report = "Percent Correct: " + percentage.ToString("0.0000") + "%\n"
                         + "Words Correct: " + currentBook.resultReport.numCorrectWords + "\n"
                         + "Words Incorrect: " + currentBook.resultReport.numIncorrectWords + "\n"
@@ -256,8 +259,10 @@ public class BookMaker : MonoBehaviour
     // A function for removing the .txt file type from the passed string
     public string RemoveTXT(string fileName)
     {
+        TextInfo textInfo = new CultureInfo("en-CA", false).TextInfo;
         string extensionToRemove = ".txt";
         string name = fileName.Replace(extensionToRemove, string.Empty);
+        name = textInfo.ToTitleCase(name);
         return name;
     }
 
@@ -351,7 +356,6 @@ public class BookMaker : MonoBehaviour
             {
                 this.numWords += sentence.Split(' ').Length;
             }
-            //this.numWords = 0;
             this.numCorrectWords = 0;
             this.numIncorrectWords = 0;
             // Format and display the TimeSpan value.
@@ -375,34 +379,6 @@ public class BookMaker : MonoBehaviour
             // Split the strings into arrays of words
             string[] words1 = string1.ToLower().Split(' ');
             string[] words2 = string2.ToLower().Split(' ');
-
-            ////int shorterLength = words1.Length <= words2.Length ? words1.Length : words2.Length;
-
-            //// Compare the arrays word by word
-            //for (int i = 0; i < words1.Length; i++)
-            //{
-            //    if (i >= words2.Length)
-            //    {
-            //        for (int j = i; j < words1.Length; j++)
-            //        {
-            //            incorrectWords.Add(words1[j]);
-            //        }
-            //        break;
-            //    }
-            //    //numWords++;
-            //    UnityEngine.Debug.Log(string1);
-            //    UnityEngine.Debug.Log(string2);
-            //    if (words1[i] != words2[i])
-            //    {
-            //        incorrectWords.Add(words1[i]);
-            //        numIncorrectWords++;
-            //    }
-            //    else
-            //    {
-            //        correctWords.Add(words1[i]);
-            //        numCorrectWords++;
-            //    }
-            //}
 
             List<string> missedWords = words1.Except(words2).ToList();
             incorrectWords.AddRange(missedWords);

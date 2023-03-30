@@ -42,6 +42,7 @@ public class CognitiveReader : MonoBehaviour
     // For Speech to Text and Text to Speech
     private const string SpeechSubscriptionKey = "a81c747fbc4f426985562e1171fad456";
     private const string SpeechRegion = "westus";
+    private const string RecognitionLanguage = "en-CA";
 
     // For Text to Speech
     //public Text textToSpeechOutputText;
@@ -63,11 +64,18 @@ public class CognitiveReader : MonoBehaviour
     private Microphone mic;
 #endif
 
+    // A method to replace the heardMessage with a new message, generally a previously heard message
+    public void ReplaceHeardMessage(string newMessage)
+    {
+        heardMessage = newMessage;
+    }
+
     public async void SpeechToTextButtonClick()
     {
         // Creates an instance of a speech config with specified subscription key and service region.
         // Replace with your own subscription key and service region (e.g., "westus").
         var config = SpeechConfig.FromSubscription(SpeechSubscriptionKey, SpeechRegion);
+        config.SpeechRecognitionLanguage = RecognitionLanguage;
 
         // Make sure to dispose the recognizer after use!
         using (var recognizer = new SpeechRecognizer(config))

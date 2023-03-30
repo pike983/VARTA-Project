@@ -3,7 +3,12 @@ guid: 8ef0dc459ad98d942a80fb3e43bcb640
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: LightBacking
+    second: {fileID: 2100000, guid: 8f2df72aa7e3083459beb251442a1dfc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
