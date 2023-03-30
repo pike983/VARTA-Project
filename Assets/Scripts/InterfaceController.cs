@@ -7,6 +7,7 @@ public class InterfaceController : MonoBehaviour
 {
     public Canvas interfaceCanvas;
 
+    // Opens and closes the user interface (the controls help), based on the button being pressed.
     public void OpenClose(InputAction.CallbackContext context)
     {
         if (interfaceCanvas != null)

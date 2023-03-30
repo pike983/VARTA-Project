@@ -95,20 +95,21 @@ public class CognitiveReader : MonoBehaviour
 
             // Checks result.
             string newMessage = string.Empty;
-            if (result.Reason == ResultReason.RecognizedSpeech)
+            if (result.Reason == ResultReason.RecognizedSpeech) // Speech was recognized by the SpeechRecognizer.
             {
                 newMessage = result.Text;
             }
-            else if (result.Reason == ResultReason.NoMatch)
+            else if (result.Reason == ResultReason.NoMatch) // Speech was not recognized.
             {
                 newMessage = "NOMATCH: Speech could not be recognized.";
             }
-            else if (result.Reason == ResultReason.Canceled)
+            else if (result.Reason == ResultReason.Canceled) // The speech recognition was cancelled by the user or the recognizer.
             {
                 var cancellation = CancellationDetails.FromResult(result);
                 newMessage = $"CANCELED: Reason={cancellation.Reason} ErrorDetails={cancellation.ErrorDetails}";
             }
 
+            // Updates the heardMessage, which is what is displayed to the user.
             lock (listeningThreadLocker)
             {
                 heardMessage = newMessage;
@@ -117,7 +118,7 @@ public class CognitiveReader : MonoBehaviour
         }
     }
 
-    // Calls TextToSpeechActivate on a string that has been converted into each individual letter.
+    // Calls TextToSpeechActivate on a string that has been converted into each individual letter and the word itself.
     public void ReadWordInParts(TMP_Dropdown optionMenu)
     {
         string text = optionMenu.options[optionMenu.value].text;
@@ -137,16 +138,19 @@ public class CognitiveReader : MonoBehaviour
         TextToSpeechActivate(text);
     }
 
+    // Reads out a text field.
     public void SpeakGivenText(Text text)
     {
         TextToSpeechActivate(text.text);
     }
 
+    // Reads out a TMPro text field.
     public void SpeakGivenTMPText(TMPro.TextMeshProUGUI text)
     {
         TextToSpeechActivate(text.text);
     }
 
+    // Reads out a string.
     public void TextToSpeechActivate(string textToSpeak)
     {
         if (!ableToSpeak)
@@ -170,6 +174,7 @@ public class CognitiveReader : MonoBehaviour
             // Native playback support will be added in the future release.
             var audioDataStream = AudioDataStream.FromResult(result);
             var isFirstAudioChunk = true;
+            // Creates a buffer to hold the audio data.
             var audioClip = AudioClip.Create(
                 "Speech",
                 SampleRate * 600, // Can speak 10mins audio as maximum
@@ -208,6 +213,7 @@ public class CognitiveReader : MonoBehaviour
                     }
                 });
 
+            // Play the audio source created from the given text.
             audioSource.clip = audioClip;
             audioSource.Play();
         }
@@ -235,6 +241,7 @@ public class CognitiveReader : MonoBehaviour
         TextToSpeechUpdate();
     }
 
+    // Sets up the speech to text service.
     private void SpeechToTextStart()
     {
         if (recognizedOutputText == null)
@@ -249,6 +256,9 @@ public class CognitiveReader : MonoBehaviour
         else
         {
             // Continue with normal initialization, Text and Button objects are present.
+            // PLATFORM_ANDROID is used to check if the application is running on Android and requests microphone access.
+            // PLATFORM_IOS is used to check if the application is running on iOS and requests microphone access.
+            // This is used to allow the application to run on different platforms without having to change the code.
 #if PLATFORM_ANDROID
             // Request to use the microphone, cf.
             // https://docs.unity3d.com/Manual/android-RequestingPermissions.html
@@ -270,6 +280,7 @@ public class CognitiveReader : MonoBehaviour
         }
     }
 
+    // Handles the code that needs to be run every update for the speech to text service.
     private void SpeechToTextUpdate()
     {
 #if PLATFORM_ANDROID
@@ -298,7 +309,8 @@ public class CognitiveReader : MonoBehaviour
             }
         }
     }
-        
+
+    // Sets up the text to speech service.
     private void TextToSpeechStart()
     {
         if (outputText == null)
@@ -330,6 +342,13 @@ public class CognitiveReader : MonoBehaviour
         }
     }
 
+    // Handles the code that needs to be run every update for the text to speech service.
+    // Locks the thread to prevent multiple threads from accessing the same resource.
+    // Tells the service if it is waiting for a previous message to be spoken or not.
+    // And updates the message that is displayed on a TMPro text object with the result of the speech synthesis.
+    // This result is the error message or the latency of the speech synthesis.
+    // The latency is the time it takes for the speech synthesis to complete.
+    // It also stops a previously started speech synthesis if a new one is started.
     private void TextToSpeechUpdate()
     {
         lock (speakingThreadLocker)

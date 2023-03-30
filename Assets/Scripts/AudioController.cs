@@ -49,10 +49,9 @@ public class AudioController : MonoBehaviour
         // Loop through the files and add them to the audioFiles list.
         foreach (string file in files)
         {
-            //Debug.Log(file);
+            // Check if the file is an audio file of the correct type.
             if (file.EndsWith(".mp3") || file.EndsWith(".wav") || file.EndsWith(".ogg"))
             {
-                //Debug.Log("Adding file: " + file);
                 audioFiles.Add(file);
                 // Add the audio file to the audioTracks list.
                 if (file.EndsWith(".wav"))
@@ -85,8 +84,6 @@ public class AudioController : MonoBehaviour
         }
 
         // Play the next track.
-        //Debug.Log("Current Number: " + currentTrack);
-        //Debug.Log("Number of Tracks: " + audioTracks.Count);
         audioTrack = audioTracks[currentTrack];
         audioSource.clip = audioTrack;
         audioSource.Play();
@@ -105,6 +102,7 @@ public class AudioController : MonoBehaviour
         }
     }
 
+    // Tells the audio source to play or pause the music.
     public void PlayPauseMusic()
     {
         pauseMusic = !pauseMusic;
@@ -114,7 +112,6 @@ public class AudioController : MonoBehaviour
     void Start()
     {
         path = Application.dataPath + "/Sounds/BackgroundMusic";
-        //Debug.Log(path);
         LoadAudioFiles();
         Shuffle();
         PlayNextTrack();
@@ -128,11 +125,11 @@ public class AudioController : MonoBehaviour
         {
             PlayNextTrack();
         }
-        else if (pauseMusic)
+        else if (pauseMusic) // Pauses the music if it is paused by the user.
         {
             audioSource.Pause();
         }
-        else
+        else // Unpauses the music if it is unpaused by the user.
         {
             audioSource.UnPause();
         }

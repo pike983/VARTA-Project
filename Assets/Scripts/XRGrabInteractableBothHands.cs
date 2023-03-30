@@ -11,6 +11,8 @@ public class XRGrabInteractableBothHands : XRGrabInteractable
     public Transform leftHandTransform;
     public Transform rightHandTransform;
 
+    // This function is called when the object is grabbed.
+    // It tells the object which hand is grabbing it.
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         if(args.interactorObject.transform.CompareTag("Left Hand"))
