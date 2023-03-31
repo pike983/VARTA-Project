@@ -15,8 +15,11 @@ public class MultiDisplayScript : MonoBehaviour
         // Stop after the first display is activated.
         for (int i = 1; i < Display.displays.Length; i++)
         {
+            if (i >= 2)
+            {
+                break;
+            }
             Display.displays[i].Activate();
-            break;
         }
         // Break after the first display is activated as only one display is needed to show the game
         // to external observers. This could be modified to allow for multiple displays to be used at

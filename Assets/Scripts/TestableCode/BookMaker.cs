@@ -179,7 +179,7 @@ public class BookMaker : MonoBehaviour
     void Start()
     {
         bookShelf = new BookShelf();
-        MakeStopWatch();
+        stopwatch = new Stopwatch();
         GetFiles();
         setCurrentBook(currentBookTitle);
 
@@ -283,7 +283,6 @@ public class BookMaker : MonoBehaviour
         // Create a new book
         Book book = new Book(RemoveTXT(fileName), sentences);
         bookShelf.AddBook(book);
-
     }
 
     // A function for removing the .txt file type from the passed string.
