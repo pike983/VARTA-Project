@@ -9,7 +9,6 @@ public class MultiDisplayScript : MonoBehaviour
     {
         // This code is taken from the Unity documentation.
         // https://docs.unity3d.com/Manual/MultiDisplay.html
-        Debug.Log("displays connected: " + Display.displays.Length);
         // Display.displays[0] is the primary, default display and is always ON, so start at index 1.
         // Check if additional displays are available and activate each.
         // Stop after the first display is activated.

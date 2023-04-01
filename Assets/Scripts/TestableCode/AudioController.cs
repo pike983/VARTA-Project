@@ -111,7 +111,7 @@ public class AudioController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        path = Application.dataPath + "/Sounds/BackgroundMusic";
+        path = Application.streamingAssetsPath + "/Sounds/BackgroundMusic";
         LoadAudioFiles();
         Shuffle();
         PlayNextTrack();
