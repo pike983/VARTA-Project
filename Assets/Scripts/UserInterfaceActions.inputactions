@@ -1,0 +1,34 @@
+{
+    "name": "InterfaceActions",
+    "maps": [
+        {
+            "name": "User Interface",
+            "id": "d93fbac0-1b77-49b9-a0df-5c39352fcfe6",
+            "actions": [
+                {
+                    "name": "OpenClose",
+                    "type": "Button",
+                    "id": "4b236ee9-b2cf-49dd-a487-aca8412143f1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "ef188dec-0b9a-450c-845f-dcfc9dfe026c",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenClose",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
